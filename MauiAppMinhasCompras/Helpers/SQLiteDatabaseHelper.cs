@@ -57,4 +57,4 @@ namespace MauiAppMinhasCompras.Helpers
             // Executa a consulta e retorna a lista
         }
     }
-} byee byeeeee
+}
