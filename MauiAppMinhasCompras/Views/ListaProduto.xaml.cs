@@ -78,8 +78,7 @@ public partial class ListaProduto : ContentPage
 
             Produto p = selecinado.BindingContext as Produto;
 
-            bool confirm = await DisplayAlert(
-                "Tem Certeza?", $"Remover {p.Descricao}?", "Sim", "N�o");
+            bool confirm = await DisplayAlert("Tem Certeza?", $"Remover {p.Descricao}?", "Sim", "Nao");
 
             if (confirm)
             {
