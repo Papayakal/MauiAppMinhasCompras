@@ -25,7 +25,7 @@ namespace MauiAppMinhasCompras.Helpers
         // Atualiza um produto existente
         public Task<List<Produto>> Update(Produto p)
         {
-            string sql = "UPDATE Produto SET Descricao=?, Quantidade =?, Preco=?, WHERE Id=?";
+            string sql = "UPDATE Produto SET Descricao=?, Quantidade =?, Preco=? WHERE Id=?";
             // Comando SQL para atualizar um produto pelo Id
 
             return _conn.QueryAsync<Produto>(
