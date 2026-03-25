@@ -7,7 +7,7 @@ public partial class NovoProduto : ContentPage
 {
     public NovoProduto()
     {
-        InitializeComponent(); 
+        InitializeComponent();
     }
 
     // Evento acionado ao clicar no botão da Toolbar (Salvar)
@@ -25,7 +25,10 @@ public partial class NovoProduto : ContentPage
                 Quantidade = Convert.ToDouble(txt_quantidade.Text),
 
                 // Converte o texto do preço para número (double)
-                Preco = Convert.ToDouble(txt_preco.Text)
+                Preco = Convert.ToDouble(txt_preco.Text),
+
+                Categoria = txt_categoria.Text
+
             };
 
             // Insere o produto no banco de dados
@@ -33,6 +36,8 @@ public partial class NovoProduto : ContentPage
 
             // Exibe mensagem de sucesso
             await DisplayAlert("Sucesso!", "Registro Inserido", "OK");
+
+            await Navigation.PopAsync();
 
         }
         catch (Exception ex) // Caso aconteça algum erro

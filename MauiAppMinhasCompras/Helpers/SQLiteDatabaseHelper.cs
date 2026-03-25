@@ -1,4 +1,5 @@
 ﻿using MauiAppMinhasCompras.Models; // Importa os modelos da aplicação
+using MauiAppMinhasCompras.Views;
 using SQLite; // Importa a biblioteca do SQLite
  //caso a cor das using esteja apagadas significa que o programa ou aplicacao que voce busca usar nao esta implementado no codigo para o uso do arquivo
 
@@ -25,11 +26,11 @@ namespace MauiAppMinhasCompras.Helpers
         // Atualiza um produto existente
         public Task<List<Produto>> Update(Produto p)
         {
-            string sql = "UPDATE Produto SET Descricao=?, Quantidade =?, Preco=? WHERE Id=?";
+            string sql = "UPDATE Produto SET Descricao=?, Quantidade=?, Categoria=?, Preco=? WHERE Id=?";
             // Comando SQL para atualizar um produto pelo Id
 
             return _conn.QueryAsync<Produto>(
-                sql, p.Descricao, p.Quantidade, p.Preco, p.Id
+                sql, p.Descricao, p.Quantidade,p.Categoria, p.Preco, p.Id
             ); // Executa o update passando os parâmetros
         }
 
@@ -55,6 +56,31 @@ namespace MauiAppMinhasCompras.Helpers
 
             return _conn.QueryAsync<Produto>(sql);
             // Executa a consulta e retorna a lista
+        }
+
+        public Task<List<Produto>> Search1(string q)
+        {
+            string sql = "SELECT * FROM Produto WHERE categoria LIKE '%" + q + "%'";
+            return _conn.QueryAsync<Produto>(sql);
+        }
+
+        public async Task<List<RelatorioCategoria>> GetRelatorioPorCategoria()
+        {
+            // 1. Pega todos os produtos
+            var produtos = await _conn.Table<Produto>().ToListAsync();
+
+            // 2. Agrupa por categoria e soma os valores
+            var relatorio = produtos
+                .GroupBy(p => string.IsNullOrEmpty(p.Categoria) ? "Sem categoria" : p.Categoria)
+                .Select(g => new RelatorioCategoria
+                {
+                    Categoria = g.Key,
+                    Total = g.Sum(p => p.Preco * p.Quantidade)
+                })
+                .OrderByDescending(r => r.Total) 
+                .ToList();
+
+            return relatorio;
         }
     }
 }
